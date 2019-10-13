@@ -20,31 +20,29 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
-void ABasePlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+/* Character Controls Interface*/
+void ABasePlayerCharacter::MoveForward_Implementation(float Scale)
 {
-	// set up gameplay key bindings
-	check(PlayerInputComponent);
-
-	// Bind jump events
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
-	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ABasePlayerCharacter::OnFire);
-
-	// Bind movement events
-	PlayerInputComponent->BindAxis("MoveForward", this, &ABasePlayerCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ABasePlayerCharacter::MoveRight);
-
-	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
-	// "turn" handles devices that provide an absolute delta, such as a mouse.
-	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &ABasePlayerCharacter::TurnAtRate);
+	CharacterMoveForward(Scale);
 }
 
-void ABasePlayerCharacter::MoveForward(float Value)
+void ABasePlayerCharacter::MoveRight_Implementation(float Scale)
+{
+	CharacterMoveRight(Scale);
+}
+
+void ABasePlayerCharacter::TurnRate_Implementation(float Scale)
+{
+	CharacterTurnAtRate(Scale);
+}
+
+void ABasePlayerCharacter::Turn_Implementation(float Scale)
+{
+	AddControllerYawInput(Scale);
+}
+/* End of character controls interface */
+
+void ABasePlayerCharacter::CharacterMoveForward(float Value)
 {
 	if (Value != 0.0f)
 	{
@@ -58,7 +56,7 @@ void ABasePlayerCharacter::MoveForward(float Value)
 	}
 }
 
-void ABasePlayerCharacter::MoveRight(float Value)
+void ABasePlayerCharacter::CharacterMoveRight(float Value)
 {
 	if (Value != 0.0f)
 	{
@@ -72,7 +70,9 @@ void ABasePlayerCharacter::MoveRight(float Value)
 	}
 }
 
-void ABasePlayerCharacter::TurnAtRate(float Rate)
+
+
+void ABasePlayerCharacter::CharacterTurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());

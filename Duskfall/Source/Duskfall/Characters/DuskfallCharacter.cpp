@@ -28,8 +28,54 @@ void ADuskfallCharacter::BeginPlay()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
-void ADuskfallCharacter::OnFire()
+/* Character Controls Interface*/
+void ADuskfallCharacter::JumpPressed_Implementation()
 {
-	
+	Jump();
 }
+
+void ADuskfallCharacter::JumpReleased_Implementation()
+{
+	StopJumping();
+}
+
+void ADuskfallCharacter::AttackPressed_Implementation()
+{
+}
+
+void ADuskfallCharacter::AttackReleased_Implementation()
+{
+}
+
+void ADuskfallCharacter::BlockPressed_Implementation()
+{
+}
+
+void ADuskfallCharacter::BlockReleased_Implementation()
+{
+}
+
+void ADuskfallCharacter::DashPressed_Implementation()
+{
+}
+
+void ADuskfallCharacter::DashReleased_Implementation()
+{
+}
+
+void ADuskfallCharacter::MoveForward_Implementation(float Scale)
+{
+}
+
+void ADuskfallCharacter::MoveRight_Implementation(float Scale)
+{
+}
+
+void ADuskfallCharacter::TurnRate_Implementation(float Scale)
+{
+}
+
+void ADuskfallCharacter::Turn_Implementation(float Scale)
+{
+}
+/* End of character controls interface */

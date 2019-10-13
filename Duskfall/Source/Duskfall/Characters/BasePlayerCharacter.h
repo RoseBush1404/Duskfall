@@ -7,8 +7,6 @@
 #include "Characters/DuskfallCharacter.h"
 #include "BasePlayerCharacter.generated.h"
 
-class UInputComponent;
-
 /**
  * 
  */
@@ -28,20 +26,21 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	virtual void MoveForward_Implementation(float Scale) override;
+	virtual void MoveRight_Implementation(float Scale) override;
+	virtual void TurnRate_Implementation(float Scale) override;
+	virtual void Turn_Implementation(float Scale) override;
+
 protected:
 
 	/** Handles moving forward/backward */
-	void MoveForward(float Val);
+	void CharacterMoveForward(float Val);
 
 	/** Handles stafing movement, left and right */
-	void MoveRight(float Val);
+	void CharacterMoveRight(float Val);
 
 	/** looking left and right*/
-	void TurnAtRate(float Rate);
-
-	// APawn interface
-	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
-	// End of APawn interface
+	void CharacterTurnAtRate(float Rate);
 
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<UCameraShake> WalkingCameraShake;
