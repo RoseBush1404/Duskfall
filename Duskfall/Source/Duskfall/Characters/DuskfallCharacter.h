@@ -7,6 +7,19 @@
 #include "Characters/CharacterControls.h"
 #include "DuskfallCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class ECharacterState : uint8
+{
+	ECS_Moveable UMETA(DisplayName = "Moveable"),
+	ECS_Died UMETA(DisplayName = "Died"),
+	ECS_Attacking UMETA(DisplayName = "Attacking"),
+	ECS_Blocking UMETA(DisplayName = "Blocking"),
+	ECS_Staggered UMETA(DisplayName = "Starggered"),
+	ECS_Parrying UMETA(DisplayName = "Parrying"),
+	ECS_UsingItem UMETA(DisplayName = "Using Item")
+};
+
+
 UCLASS(config=Game)
 class ADuskfallCharacter : public ACharacter, public ICharacterControls
 {
@@ -63,8 +76,12 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Controls")
 		void Turn(float Scale);
 		virtual void Turn_Implementation(float Scale) override;
-
+	/* End of Character Controls Interface */
+	
 protected:
 	virtual void BeginPlay();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Default)
+		ECharacterState CharacterState = ECharacterState::ECS_Moveable;
 };
 
