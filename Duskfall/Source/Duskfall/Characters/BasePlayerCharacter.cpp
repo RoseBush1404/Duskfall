@@ -3,11 +3,14 @@
 
 #include "BasePlayerCharacter.h"
 #include "GameFramework/PlayerController.h"
-#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
-#include "Camera/PlayerCameraManager.h"
+#include "Camera/CameraComponent.h"
+#include "PaperFlipbookComponent.h"
+#include "../Weapons/BaseWeapon.h"
+#include "TimerManager.h"
+
 
 ABasePlayerCharacter::ABasePlayerCharacter()
 {
@@ -16,6 +19,58 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->RelativeLocation = FVector(-39.56f, 1.75f, 64.f); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+
+	WeaponFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("WeaponFlipBook"));
+	WeaponFlipbook->SetupAttachment(GetCapsuleComponent());
+	WeaponFlipbook->RelativeLocation = FVector(10.0f, 10.0f, 60.0f);
+	WeaponFlipbook->RelativeRotation = FRotator(0.0f, 90.0f, 0.0f);
+	
+}
+
+void ABasePlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Weapon->SetFlipbook(WeaponFlipbook);
+
+	GetWorld()->GetTimerManager().SetTimer(RegenStaminaTimer, this, &ADuskfallCharacter::RegenStamina, StaminaRegenRate, true);
+}
+
+void ABasePlayerCharacter::PlayGivenCameraShake(TSubclassOf<UCameraShake> GivenCameraShake, float Scale)
+{
+	if(GivenCameraShake != nullptr)
+	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(GivenCameraShake, Scale);
+}
+
+void ABasePlayerCharacter::TakeDamage_Implementation(float Damage, float DamageMoifier, AActor * DamageCauser)
+{
+	if (DamageCauser == this) { return; }
+
+	switch (CharacterState)
+	{
+	case ECharacterState::ECS_Moveable:
+		RemoveHealth(Damage * DamageMoifier);
+		break;
+	case ECharacterState::ECS_Died:
+		break;
+	case ECharacterState::ECS_Attacking:
+		RemoveHealth(Damage * DamageMoifier);
+		break;
+	case ECharacterState::ECS_Blocking:
+		//check to see if they are in front and so block damage
+		break;
+	case ECharacterState::ECS_Staggered:
+		RemoveHealth(Damage * DamageMoifier);
+		break;
+	case ECharacterState::ECS_Parrying:
+		//check if they are in front of you and parry them
+		break;
+	case ECharacterState::ECS_UsingItem:
+		RemoveHealth(Damage * DamageMoifier);
+		break;
+	default:
+		break;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

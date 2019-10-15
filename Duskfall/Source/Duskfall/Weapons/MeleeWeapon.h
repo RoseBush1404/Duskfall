@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Weapons/BaseWeapon.h"
+#include "Engine/Public/WorldCollision.h"
 #include "MeleeWeapon.generated.h"
 
 /**
@@ -14,4 +15,10 @@ class DUSKFALL_API AMeleeWeapon : public ABaseWeapon
 {
 	GENERATED_BODY()
 	
+protected:
+
+	virtual void HitEffect() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Melee Weapon Stats")
+		FVector HitBoxHalfSize = FVector(100.0f,50.0f,50.0f);
 };

@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraShake.h"
 #include "Characters/DuskfallCharacter.h"
 #include "BasePlayerCharacter.generated.h"
+
+class UPaperFlipbookComponent;
 
 /**
  * 
@@ -19,6 +20,9 @@ class DUSKFALL_API ABasePlayerCharacter : public ADuskfallCharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Flipbook, meta = (AllowPrivateAccess = "true"))
+	UPaperFlipbookComponent* WeaponFlipbook;
+
 public:
 
 	ABasePlayerCharacter();
@@ -26,12 +30,18 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	virtual void PlayGivenCameraShake(TSubclassOf<UCameraShake> GivenCameraShake, float Scale) override;
+
+	virtual void TakeDamage_Implementation(float Damage, float DamageMoifier, AActor* DamageCauser) override;
+
 	virtual void MoveForward_Implementation(float Scale) override;
 	virtual void MoveRight_Implementation(float Scale) override;
 	virtual void TurnRate_Implementation(float Scale) override;
 	virtual void Turn_Implementation(float Scale) override;
 
 protected:
+
+	virtual void BeginPlay() override;
 
 	/** Handles moving forward/backward */
 	void CharacterMoveForward(float Val);

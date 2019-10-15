@@ -5,7 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Characters/CharacterControls.h"
+#include "Characters/HealthSystem.h"
+#include "Camera/CameraShake.h"
 #include "DuskfallCharacter.generated.h"
+
+class ABaseWeapon;
 
 UENUM(BlueprintType)
 enum class ECharacterState : uint8
@@ -21,9 +25,12 @@ enum class ECharacterState : uint8
 
 
 UCLASS(config=Game)
-class ADuskfallCharacter : public ACharacter, public ICharacterControls
+class ADuskfallCharacter : public ACharacter, public ICharacterControls, public IHealthSystem
 {
 	GENERATED_BODY()
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Muzzle, meta = (AllowPrivateAccess = "true"))
+			UArrowComponent* MuzzlePoint;
 
 public:
 	ADuskfallCharacter();
@@ -32,7 +39,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseTurnRate;
 
-	/* Character control interface*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+		float CurrentStamina = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+		float CurrentHealth = 0.0f;
+
+	void UpdateCharacterState(ECharacterState NewState) { CharacterState = NewState; }
+
+	virtual void RegenStamina();
+	void DecreaseStamina(float StaminaToLose) { CurrentStamina = CurrentStamina - StaminaToLose; }
+
+	virtual void PlayGivenCameraShake(TSubclassOf<UCameraShake> GivenCameraShake, float Scale);
+
+	/* Health System Interface */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Health Sytem")
+		void TakeDamage(float Damage, float DamageMoifier, AActor* DamageCauser);
+		virtual void TakeDamage_Implementation(float Damage, float DamageMoifier, AActor* DamageCauser) override;
+	/* End of Health System Interface */
+
+	/* Character control interface */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Controls")
 		void JumpPressed();
 		virtual void JumpPressed_Implementation() override;
@@ -81,7 +107,26 @@ public:
 protected:
 	virtual void BeginPlay();
 
+	virtual void RemoveHealth(float Damage);
+	virtual void Die();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Default)
 		ECharacterState CharacterState = ECharacterState::ECS_Moveable;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float MaxHealth = 100.0f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float MaxStamina = 100.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float StaminaRegenAmount = 0.1f;
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float StaminaRegenRate = 0.1f;
+	FTimerHandle RegenStaminaTimer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
+		TSubclassOf<ABaseWeapon> StartingWeapon;
+
+	ABaseWeapon* Weapon;
 };
 
