@@ -7,6 +7,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "Camera/CameraComponent.h"
 #include "../Weapons/BaseWeapon.h"
+#include "../Weapons/BaseShield.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -33,13 +34,23 @@ void ADuskfallCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	Weapon = GetWorld()->SpawnActor<ABaseWeapon>(StartingWeapon, GetActorTransform());
-	Weapon->AttachToActor(this,FAttachmentTransformRules::KeepRelativeTransform);
-	Weapon->SetUser(this);
-	Weapon->SetMuzzlePoint(MuzzlePoint);
 	UCharacterMovementComponent* MovementComponent = this->GetCharacterMovement();
-	Weapon->SetDefaultMovementSpeed(MovementComponent->MaxWalkSpeed);
 
+	if (StartingWeapon != nullptr)
+	{
+		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(StartingWeapon, GetActorTransform());
+		Weapon->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		Weapon->SetUser(this);
+		Weapon->SetMuzzlePoint(MuzzlePoint);
+		Weapon->SetDefaultMovementSpeed(MovementComponent->MaxWalkSpeed);
+	}
+	if (StartingShield != nullptr)
+	{
+		Shield = GetWorld()->SpawnActor<ABaseShield>(StartingShield, GetActorTransform());
+		Shield->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		Shield->SetUser(this);
+		Shield->SetDefaultMovementSpeed(MovementComponent->MaxWalkSpeed);
+	}
 	CurrentStamina = MaxStamina;
 	CurrentHealth = MaxHealth;
 }
@@ -52,6 +63,19 @@ void ADuskfallCharacter::RemoveHealth(float Damage)
 
 void ADuskfallCharacter::Die()
 {
+}
+
+void ADuskfallCharacter::Dash()
+{
+	//remove x amount of stamina
+	CurrentStamina = CurrentStamina - DashStaminaDrain;
+
+	//TODO add shielf element to dash
+	//if have shield and using it to block then auto-lower shield
+
+	//add impule
+	GetCharacterMovement()->AddImpulse(FVector(0.0f, 0.0f, DashUpwardForce), true);
+	GetCharacterMovement()->AddImpulse(GetVelocity() * DashVelocityModifier, true);
 }
 
 void ADuskfallCharacter::RegenStamina()
@@ -116,25 +140,59 @@ void ADuskfallCharacter::JumpReleased_Implementation()
 
 void ADuskfallCharacter::AttackPressed_Implementation()
 {
-	CharacterState = ECharacterState::ECS_Attacking;
-	Weapon->AttackPressed();
+	if (CurrentStamina > 0)
+	{
+		if (CharacterState == ECharacterState::ECS_Blocking)
+		{
+			if (Shield != nullptr)
+			{
+				Shield->ParryPressed();
+			}
+		}
+		else
+		{
+			if (Weapon != nullptr)
+			{
+				CharacterState = ECharacterState::ECS_Attacking;
+				Weapon->AttackPressed();
+			}
+		}
+	}
 }
 
 void ADuskfallCharacter::AttackReleased_Implementation()
 {
-	Weapon->AttackReleased();
+	if (Weapon != nullptr)
+	{
+		Weapon->AttackReleased();
+	}
 }
 
 void ADuskfallCharacter::BlockPressed_Implementation()
 {
+	if (Shield != nullptr)
+	{
+		Shield->BlockPressed();
+	}
 }
 
 void ADuskfallCharacter::BlockReleased_Implementation()
 {
+	if (CurrentStamina > 0)
+	{
+		if (Shield != nullptr)
+		{
+			Shield->BlockReleased();
+		}
+	}
 }
 
 void ADuskfallCharacter::DashPressed_Implementation()
 {
+	if (GetCharacterMovement()->IsMovingOnGround())
+	{
+		Dash();
+	}
 }
 
 void ADuskfallCharacter::DashReleased_Implementation()

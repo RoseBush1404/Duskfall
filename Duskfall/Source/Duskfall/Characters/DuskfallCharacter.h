@@ -10,6 +10,7 @@
 #include "DuskfallCharacter.generated.h"
 
 class ABaseWeapon;
+class ABaseShield;
 
 UENUM(BlueprintType)
 enum class ECharacterState : uint8
@@ -110,6 +111,8 @@ protected:
 	virtual void RemoveHealth(float Damage);
 	virtual void Die();
 
+	virtual void Dash();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Default)
 		ECharacterState CharacterState = ECharacterState::ECS_Moveable;
 
@@ -124,9 +127,20 @@ protected:
 		float StaminaRegenRate = 0.1f;
 	FTimerHandle RegenStaminaTimer;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float DashVelocityModifier = 1.5f;
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float DashUpwardForce = 100.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float DashStaminaDrain = 20.0f;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
 		TSubclassOf<ABaseWeapon> StartingWeapon;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
+		TSubclassOf<ABaseShield> StartingShield;
+
 	ABaseWeapon* Weapon;
+	ABaseShield* Shield;
 };
 

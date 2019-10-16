@@ -17,6 +17,7 @@ UENUM(BlueprintType)
 enum class EWeaponState : uint8
 {
 	EWS_NotAttacking UMETA(DisplayName = "NotAttacking"),
+	EWS_WaitingForRelease UMETA(DisplayName = "WaitingForRelase"),
 	EWS_WindingUp UMETA(DisplayName = "WindingUp"),
 	EWS_Damage UMETA(DisplayName = "Damage"),
 	EWS_WindingDown UMETA(DisplayName = "WindingDown"),

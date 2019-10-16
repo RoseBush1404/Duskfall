@@ -18,10 +18,13 @@ class DUSKFALL_API ABasePlayerCharacter : public ADuskfallCharacter
 	
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FirstPersonCameraComponent;
+		class UCameraComponent* FirstPersonCameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Flipbook, meta = (AllowPrivateAccess = "true"))
-	UPaperFlipbookComponent* WeaponFlipbook;
+		UPaperFlipbookComponent* WeaponFlipbook;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Flipbook, meta = (AllowPrivateAccess = "true"))
+		UPaperFlipbookComponent* ShieldFlipbook;
 
 public:
 

@@ -33,6 +33,8 @@ void ABaseWeapon::AttackPressed()
 		UCharacterMovementComponent* MovementComponent = User->GetCharacterMovement();
 		MovementComponent->MaxWalkSpeed = AttackMovementSpeed;
 
+		WeaponState = EWeaponState::EWS_WaitingForRelease;
+
 		GetWorld()->GetTimerManager().SetTimer(weaponChargingTimer, this, &ABaseWeapon::AttackingCharging, 0.1f, true);
 	}
 }
@@ -41,7 +43,7 @@ void ABaseWeapon::AttackReleased()
 {
 	if (User == nullptr) { return; }
 
-	if (WeaponState == EWeaponState::EWS_Charging || WeaponState == EWeaponState::EWS_NotAttacking)
+	if (WeaponState == EWeaponState::EWS_Charging || WeaponState == EWeaponState::EWS_WaitingForRelease)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(weaponChargingTimer);
 		AttackTriggered();
@@ -59,7 +61,7 @@ void ABaseWeapon::AttackTriggered()
 {
 	SetChargeModifier();
 
-	// todo tell character to use X amount of stamina
+	// tell character to use X amount of stamina
 	User->DecreaseStamina(AttackStaminaDrain * ChargeModifier);
 
 	if (ChargeModifier > 1.0f)
