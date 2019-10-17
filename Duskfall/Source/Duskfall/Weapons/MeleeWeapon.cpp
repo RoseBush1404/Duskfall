@@ -19,7 +19,7 @@ void AMeleeWeapon::HitEffect()
 
 		TArray<FHitResult> OutResults;
 		bool isHit = GetWorld()->SweepMultiByChannel(OutResults, StartLocation, EndLocation, ForwardRotation, ECollisionChannel::ECC_Visibility, CollisionShape);
-		//DrawDebugBox(GetWorld(), StartLocation, HitBoxHalfSize, ForwardRotation, FColor::Red, true, 5.0f);
+		//DrawDebugBox(GetWorld(), StartLocation, HitBoxHalfSize, ForwardRotation, FColor::Red, false, 5.0f);
 
 		if (isHit)
 		{

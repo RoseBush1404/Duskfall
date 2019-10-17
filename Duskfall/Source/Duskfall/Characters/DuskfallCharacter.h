@@ -21,6 +21,7 @@ enum class ECharacterState : uint8
 	ECS_Blocking UMETA(DisplayName = "Blocking"),
 	ECS_Staggered UMETA(DisplayName = "Starggered"),
 	ECS_Parrying UMETA(DisplayName = "Parrying"),
+	ECS_Parryed UMETA(DisplayName = "Parryed"),
 	ECS_UsingItem UMETA(DisplayName = "Using Item")
 };
 
@@ -46,7 +47,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 		float CurrentHealth = 0.0f;
 
+	ECharacterState GetCharacterState() { return CharacterState; }
 	void UpdateCharacterState(ECharacterState NewState) { CharacterState = NewState; }
+
+	virtual void CharacterStaggered();
+	virtual void EndStagger();
+	virtual void CharacterParryed();
 
 	virtual void RegenStamina();
 	void DecreaseStamina(float StaminaToLose) { CurrentStamina = CurrentStamina - StaminaToLose; }
@@ -133,6 +139,10 @@ protected:
 		float DashUpwardForce = 100.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 		float DashStaminaDrain = 20.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float StaggerLength = 1.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+		float ParryedLength = 2.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
 		TSubclassOf<ABaseWeapon> StartingWeapon;
@@ -142,5 +152,8 @@ protected:
 
 	ABaseWeapon* Weapon;
 	ABaseShield* Shield;
+
+	FTimerHandle StaggerDelayTimer;
+	FTimerHandle ParryedDelayTimer;
 };
 

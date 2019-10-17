@@ -50,6 +50,20 @@ void ABaseWeapon::AttackReleased()
 	}
 }
 
+void ABaseWeapon::StopAttack()
+{
+	GetWorld()->GetTimerManager().ClearTimer(weaponChargingTimer);
+	GetWorld()->GetTimerManager().ClearTimer(WindUpDelayTimer);
+	GetWorld()->GetTimerManager().ClearTimer(WindDownDelayTimer);
+	GetWorld()->GetTimerManager().ClearTimer(AttackFinishDelayTimer);
+	chargeAmount = 0.0f;
+	UCharacterMovementComponent* MovementComponent = User->GetCharacterMovement();
+	MovementComponent->MaxWalkSpeed = DefaultMovementSpeed;
+	WeaponState = EWeaponState::EWS_NotAttacking;
+	if (User->GetCharacterState() == ECharacterState::ECS_Parryed || User->GetCharacterState() == ECharacterState::ECS_Staggered) { return; }
+	FlipbookComponent->SetFlipbook(IdleWeaponAnimation);
+}
+
 void ABaseWeapon::SetFlipbook(UPaperFlipbookComponent * Flipbook)
 {
 	FlipbookComponent = Flipbook; 
@@ -107,6 +121,11 @@ void ABaseWeapon::WindDownTrigger()
 	UCharacterMovementComponent* MovementComponent = User->GetCharacterMovement();
 	MovementComponent->MaxWalkSpeed = DefaultMovementSpeed;
 	chargeAmount = 0.0f;
+	if (User->GetCharacterState() == ECharacterState::ECS_Parryed || User->GetCharacterState() == ECharacterState::ECS_Staggered)
+	{
+		WeaponState = EWeaponState::EWS_NotAttacking;
+		return;
+	}
 	User->UpdateCharacterState(ECharacterState::ECS_Moveable);
 
 	GetWorld()->GetTimerManager().SetTimer(AttackFinishDelayTimer, this, &ABaseWeapon::AttackFinished, RemainAttackTime, false);
@@ -116,6 +135,7 @@ void ABaseWeapon::AttackFinished()
 {
 	WeaponState = EWeaponState::EWS_NotAttacking;
 	GetWorld()->GetTimerManager().ClearTimer(AttackFinishDelayTimer);
+	if (User->GetCharacterState() == ECharacterState::ECS_Parryed || User->GetCharacterState() == ECharacterState::ECS_Staggered) { return; }
 	FlipbookComponent->SetFlipbook(IdleWeaponAnimation);
 }
 

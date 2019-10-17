@@ -37,6 +37,8 @@ public:
 
 	virtual void AttackReleased();
 
+	void StopAttack();
+
 	void SetUser(ADuskfallCharacter* Character) { User = Character; }
 
 	void SetMuzzlePoint(UArrowComponent* muzzlePoint) { Muzzle = muzzlePoint; }

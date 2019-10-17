@@ -95,7 +95,15 @@ void ABasePlayerCharacter::TakeDamage_Implementation(float Damage, float DamageM
 		Dot = GetDotProductTo(DamageCauser);
 		if (Dot >= Shield->GetShieldDotProductRange())
 		{
-			//TODO tell damage dealer they have been parried
+			ADuskfallCharacter* Character = Cast<ADuskfallCharacter>(DamageCauser);
+			if (Character != nullptr)
+			{
+				Character->CharacterParryed();
+			}
+			else
+			{
+				RemoveHealth(Damage * DamageMoifier);
+			}
 		}
 		break;
 	case ECharacterState::ECS_UsingItem:

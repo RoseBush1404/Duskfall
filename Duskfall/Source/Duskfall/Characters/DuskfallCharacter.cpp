@@ -55,6 +55,11 @@ void ADuskfallCharacter::BeginPlay()
 	CurrentHealth = MaxHealth;
 }
 
+void ADuskfallCharacter::EndStagger()
+{
+	UpdateCharacterState(ECharacterState::ECS_Moveable);
+}
+
 void ADuskfallCharacter::RemoveHealth(float Damage)
 {
 	CurrentHealth = CurrentHealth - Damage;
@@ -70,12 +75,20 @@ void ADuskfallCharacter::Dash()
 	//remove x amount of stamina
 	CurrentStamina = CurrentStamina - DashStaminaDrain;
 
-	//TODO add shielf element to dash
 	//if have shield and using it to block then auto-lower shield
+	if (Shield != nullptr && CharacterState == ECharacterState::ECS_Blocking) { Shield->DropShield(); }
 
 	//add impule
 	GetCharacterMovement()->AddImpulse(FVector(0.0f, 0.0f, DashUpwardForce), true);
 	GetCharacterMovement()->AddImpulse(GetVelocity() * DashVelocityModifier, true);
+}
+
+void ADuskfallCharacter::CharacterStaggered()
+{
+}
+
+void ADuskfallCharacter::CharacterParryed()
+{
 }
 
 void ADuskfallCharacter::RegenStamina()
