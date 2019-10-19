@@ -128,11 +128,11 @@ void ABaseAICharacter::Knockback(float Modifier, FVector SourceLocation)
 
 void ABaseAICharacter::CharacterParryed()
 {
-	CharacterFlipbook->SetFlipbook(StaggeredCharacterAnimation);
 	if (Weapon != nullptr)
 	{
 		Weapon->StopAttack();
 	}
+	CharacterFlipbook->SetFlipbook(StaggeredCharacterAnimation);
 	CharacterState = ECharacterState::ECS_Parryed;
 	GetWorld()->GetTimerManager().SetTimer(ParryedDelayTimer, this, &ADuskfallCharacter::EndStagger, ParryedLength, false);
 }
