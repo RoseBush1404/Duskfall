@@ -112,6 +112,11 @@ void ABasePlayerCharacter::TakeDamage_Implementation(float Damage, float DamageM
 	default:
 		break;
 	}
+
+	if (CurrentHealth <= 0)
+	{
+		Die();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Characters/CharacterControls.h"
 #include "Characters/HealthSystem.h"
+#include "Characters/CharacterGetters.h"
 #include "Camera/CameraShake.h"
 #include "DuskfallCharacter.generated.h"
 
@@ -27,12 +28,15 @@ enum class ECharacterState : uint8
 
 
 UCLASS(config=Game)
-class ADuskfallCharacter : public ACharacter, public ICharacterControls, public IHealthSystem
+class ADuskfallCharacter : public ACharacter, public ICharacterControls, public IHealthSystem, public ICharacterGetters
 {
 	GENERATED_BODY()
 
 		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Muzzle, meta = (AllowPrivateAccess = "true"))
 			UArrowComponent* MuzzlePoint;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Muzzle, meta = (AllowPrivateAccess = "true"))
+			USceneComponent* MuzzleAttachmentPoint;
 
 public:
 	ADuskfallCharacter();
@@ -49,6 +53,7 @@ public:
 
 	ECharacterState GetCharacterState() { return CharacterState; }
 	void UpdateCharacterState(ECharacterState NewState) { CharacterState = NewState; }
+	void UpdateMuzzleRotation(FRotator NewRotation);
 
 	virtual void CharacterStaggered();
 	virtual void EndStagger();
@@ -64,6 +69,16 @@ public:
 		void TakeDamage(float Damage, float DamageMoifier, AActor* DamageCauser);
 		virtual void TakeDamage_Implementation(float Damage, float DamageMoifier, AActor* DamageCauser) override;
 	/* End of Health System Interface */
+
+	/* Character Getters Interface */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Getters")
+		ABaseWeapon* GetWeapon();
+		virtual ABaseWeapon* GetWeapon_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Getters")
+		UCharacterMovementComponent* GetCharacterMovementComponent();
+		virtual UCharacterMovementComponent* GetCharacterMovementComponent_Implementation() override;
+	/* End of Character Getters Interface*/
 
 	/* Character control interface */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Controls")

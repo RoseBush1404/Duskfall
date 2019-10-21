@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/CharacterEnums.h"
+#include "../Weapons/BaseWeapon.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UObject/Interface.h"
 #include "CharacterGetters.generated.h"
 
@@ -28,4 +29,10 @@ public:
 
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterControls")
 		//ECharacterState GetCharacterState();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterGetters")
+		ABaseWeapon* GetWeapon();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterGetters")
+		UCharacterMovementComponent* GetCharacterMovementComponent();
 };

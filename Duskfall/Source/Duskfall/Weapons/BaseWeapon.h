@@ -75,13 +75,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Base Weapon Stats")
 		float AttackStaminaDrain = 25.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Base Weapon Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base Weapon Stats")
 		float AttackWindUp = 0.5f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Base Weapon Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base Weapon Stats")
 		float AttackWindDown = 0.2f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Base Weapon Stats")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base Weapon Stats")
 		float RemainAttackTime = 0.3f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Base Weapon Stats")

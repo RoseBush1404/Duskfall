@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AI Stats")
 		float DelayBeforeDeath = 1.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "AI Stats")
+		bool CanChangePitchOfMuzzle = false;
+
 	APawn* PlayerTarget;
 	FRotator LookAtDirection;
 

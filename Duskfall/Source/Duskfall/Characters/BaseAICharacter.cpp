@@ -38,7 +38,16 @@ void ABaseAICharacter::FacePlayer()
 	if (PlayerTarget == nullptr) { return; }
 
 	LookAtDirection = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), PlayerTarget->GetActorLocation());
-	SetActorRotation(LookAtDirection);
+
+	if (!CanChangePitchOfMuzzle)
+	{
+		SetActorRotation(LookAtDirection);
+	}
+	if (CanChangePitchOfMuzzle)
+	{
+		UpdateMuzzleRotation(LookAtDirection);
+		CharacterFlipbook->SetWorldRotation(FRotator(LookAtDirection.Pitch,LookAtDirection.Yaw + 90, LookAtDirection.Roll));
+	}
 
 	if (CharacterState == ECharacterState::ECS_Moveable)
 	{

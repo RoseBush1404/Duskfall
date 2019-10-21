@@ -3,12 +3,13 @@
 #include "DuskfallProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "../Characters/HealthSystem.h"
 
 ADuskfallProjectile::ADuskfallProjectile() 
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	CollisionComp->InitSphereRadius(5.0f);
+	CollisionComp->InitSphereRadius(15.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComp->OnComponentHit.AddDynamic(this, &ADuskfallProjectile::OnHit);		// set up a notification for when this component hits something blocking
 
@@ -25,19 +26,25 @@ ADuskfallProjectile::ADuskfallProjectile()
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
-	ProjectileMovement->bShouldBounce = true;
+	ProjectileMovement->bShouldBounce = false;
+	ProjectileMovement->ProjectileGravityScale = 0.0f;
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+	
 }
 
 void ADuskfallProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
+	IHealthSystem* HealthSystem = Cast<IHealthSystem>(OtherActor);
+	if (HealthSystem != nullptr) // C++ Layer
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
-		Destroy();
+		HealthSystem->Execute_TakeDamage(OtherActor, DamageAmount, DamageModifer, this);
 	}
+	else if (OtherActor->GetClass()->ImplementsInterface(UHealthSystem::StaticClass())) // Blueprint Layer
+	{
+		IHealthSystem::Execute_TakeDamage(OtherActor, DamageAmount, DamageModifer, this);
+	}
+
+	Destroy();
 }

@@ -29,6 +29,7 @@ void ABaseWeapon::AttackPressed()
 
 	if (WeaponState == EWeaponState::EWS_NotAttacking)
 	{
+		User->UpdateCharacterState(ECharacterState::ECS_Attacking);
 		//get owner's movement component and set its speed
 		UCharacterMovementComponent* MovementComponent = User->GetCharacterMovement();
 		MovementComponent->MaxWalkSpeed = AttackMovementSpeed;

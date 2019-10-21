@@ -21,8 +21,11 @@ ADuskfallCharacter::ADuskfallCharacter()
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
+	MuzzleAttachmentPoint = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleAttachmentPoint"));
+	MuzzleAttachmentPoint->SetupAttachment(GetCapsuleComponent());
+
 	MuzzlePoint = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzlePoint"));
-	MuzzlePoint->SetupAttachment(GetCapsuleComponent());
+	MuzzlePoint->SetupAttachment(MuzzleAttachmentPoint);
 	MuzzlePoint->RelativeLocation = FVector(110.0f, 0.0f, 35.0f);
 
 	// set our turn rates for input
@@ -63,7 +66,6 @@ void ADuskfallCharacter::EndStagger()
 void ADuskfallCharacter::RemoveHealth(float Damage)
 {
 	CurrentHealth = CurrentHealth - Damage;
-	if (CurrentHealth <= 0) { Die(); }
 }
 
 void ADuskfallCharacter::Die()
@@ -81,6 +83,11 @@ void ADuskfallCharacter::Dash()
 	//add impule
 	GetCharacterMovement()->AddImpulse(FVector(0.0f, 0.0f, DashUpwardForce), true);
 	GetCharacterMovement()->AddImpulse(GetVelocity() * DashVelocityModifier, true);
+}
+
+void ADuskfallCharacter::UpdateMuzzleRotation(FRotator NewRotation)
+{
+	MuzzleAttachmentPoint->SetWorldRotation(FRotator(-NewRotation.Pitch, NewRotation.Yaw, NewRotation.Roll));
 }
 
 void ADuskfallCharacter::CharacterStaggered()
@@ -138,6 +145,17 @@ void ADuskfallCharacter::TakeDamage_Implementation(float Damage, float DamageMoi
 }
 /* End of Health System Interface */
 
+/* Character Getters Interface*/
+ABaseWeapon * ADuskfallCharacter::GetWeapon_Implementation()
+{
+	return Weapon;
+}
+UCharacterMovementComponent * ADuskfallCharacter::GetCharacterMovementComponent_Implementation()
+{
+	return GetCharacterMovement();
+}
+/* End of Character Getters Interface */
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 /* Character Controls Interface*/
@@ -164,9 +182,8 @@ void ADuskfallCharacter::AttackPressed_Implementation()
 		}
 		else
 		{
-			if (Weapon != nullptr)
+			if (Weapon != nullptr && CharacterState != ECharacterState::ECS_Attacking)
 			{
-				CharacterState = ECharacterState::ECS_Attacking;
 				Weapon->AttackPressed();
 			}
 		}
