@@ -30,7 +30,7 @@ void AMeleeWeapon::HitEffect()
 				{
 					HealthSystem->Execute_TakeDamage(Hit.GetActor(), BaseDamage, ChargeModifier, Cast<AActor>(User));
 				}
-				else if(Hit.GetActor()->GetClass()->ImplementsInterface(UHealthSystem::StaticClass())) // Blueprint Layer
+				else if(Hit.GetActor() != nullptr && Hit.GetActor()->GetClass() != nullptr && Hit.GetActor()->GetClass()->ImplementsInterface(UHealthSystem::StaticClass())) // Blueprint Layer
 				{
 					IHealthSystem::Execute_TakeDamage(Hit.GetActor(), BaseDamage, ChargeModifier, Cast<AActor>(User));
 				}
