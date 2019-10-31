@@ -31,7 +31,10 @@ public:
 	/** Returns ProjectileMovement subobject **/
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
-	float DamageAmount;
-	float DamageModifer;
+	UPROPERTY(BlueprintReadWrite, Category = "Projectile Stats")
+		float DamageAmount;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Projectile Stats")
+		float DamageModifer;
 };
 

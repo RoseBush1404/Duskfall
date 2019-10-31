@@ -41,7 +41,7 @@ void ADuskfallProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	{
 		HealthSystem->Execute_TakeDamage(OtherActor, DamageAmount, DamageModifer, this);
 	}
-	else if (OtherActor->GetClass()->ImplementsInterface(UHealthSystem::StaticClass())) // Blueprint Layer
+	else if (OtherActor != nullptr && OtherActor->GetClass() != nullptr && OtherActor->GetClass()->ImplementsInterface(UHealthSystem::StaticClass())) // Blueprint Layer
 	{
 		IHealthSystem::Execute_TakeDamage(OtherActor, DamageAmount, DamageModifer, this);
 	}

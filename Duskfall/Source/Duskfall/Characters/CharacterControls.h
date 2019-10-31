@@ -44,6 +44,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterControls")
 		void DashReleased();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterControls")
+		void UsePressed();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterControls")
+		void UseReleased();
+
 	/* Axis mappings */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "CharacterControls")
 		void MoveForward(float Scale);

@@ -110,6 +110,13 @@ public:
 		virtual void DashReleased_Implementation() override;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Controls")
+		void UsePressed();
+		virtual void UsePressed_Implementation() override;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Controls")
+		void UseReleased();
+		virtual void UseReleased_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Character Controls")
 		void MoveForward(float Scale);
 		virtual void MoveForward_Implementation(float Scale) override;
 

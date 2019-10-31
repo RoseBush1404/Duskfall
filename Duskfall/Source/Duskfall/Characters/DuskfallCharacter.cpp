@@ -221,11 +221,22 @@ void ADuskfallCharacter::DashPressed_Implementation()
 {
 	if (GetCharacterMovement()->IsMovingOnGround())
 	{
-		Dash();
+		if (CurrentStamina > 0)
+		{
+			Dash();
+		}
 	}
 }
 
 void ADuskfallCharacter::DashReleased_Implementation()
+{
+}
+
+void ADuskfallCharacter::UsePressed_Implementation()
+{
+}
+
+void ADuskfallCharacter::UseReleased_Implementation()
 {
 }
 
