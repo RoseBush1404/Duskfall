@@ -25,4 +25,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HealthSystem")
 		void TakeDamage(float Damage, float DamageMoifier, AActor* DamageCauser);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HealthSystem")
+		void GainHealth(float HealthToGain, AActor* HealingCauser);
 };

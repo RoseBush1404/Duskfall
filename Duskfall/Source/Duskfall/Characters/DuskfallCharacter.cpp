@@ -143,6 +143,12 @@ void ADuskfallCharacter::PlayGivenCameraShake(TSubclassOf<UCameraShake> GivenCam
 void ADuskfallCharacter::TakeDamage_Implementation(float Damage, float DamageMoifier, AActor * DamageCauser)
 {
 }
+
+void ADuskfallCharacter::GainHealth_Implementation(float HealthToGain, AActor * HealingCauser)
+{
+	CurrentHealth = CurrentHealth + HealthToGain;
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);
+}
 /* End of Health System Interface */
 
 /* Character Getters Interface*/

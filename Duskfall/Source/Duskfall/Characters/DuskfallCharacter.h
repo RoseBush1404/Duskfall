@@ -68,6 +68,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Health Sytem")
 		void TakeDamage(float Damage, float DamageMoifier, AActor* DamageCauser);
 		virtual void TakeDamage_Implementation(float Damage, float DamageMoifier, AActor* DamageCauser) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Health Sytem")
+		void GainHealth(float HealthToGain, AActor* HealingCauser);
+		virtual void GainHealth_Implementation(float HealthToGain, AActor* HealingCauser) override;
 	/* End of Health System Interface */
 
 	/* Character Getters Interface */
