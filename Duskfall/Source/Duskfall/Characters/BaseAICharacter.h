@@ -26,6 +26,8 @@ public:
 
 	virtual void TakeDamage_Implementation(float Damage, float DamageMoifier, AActor* DamageCauser) override;
 
+	void Die();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -35,7 +37,6 @@ protected:
 	void EndOfDamageFlash();
 	void Knockback(float Modifier, FVector SourceLocation);
 	virtual void CharacterParryed() override;
-	virtual void Die() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI Stats")
 		UPaperFlipbook* IdleCharacterAnimation;

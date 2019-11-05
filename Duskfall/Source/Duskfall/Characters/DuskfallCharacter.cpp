@@ -68,9 +68,11 @@ void ADuskfallCharacter::RemoveHealth(float Damage)
 	CurrentHealth = CurrentHealth - Damage;
 }
 
+/*
 void ADuskfallCharacter::Die()
 {
 }
+*/
 
 void ADuskfallCharacter::Dash()
 {

@@ -141,6 +141,10 @@ void ABasePlayerCharacter::Turn_Implementation(float Scale)
 {
 	AddControllerYawInput(Scale);
 }
+
+void ABasePlayerCharacter::Die_Implementation()
+{
+}
 /* End of character controls interface */
 
 void ABasePlayerCharacter::CharacterMoveForward(float Value)

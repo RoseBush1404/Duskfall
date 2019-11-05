@@ -137,11 +137,12 @@ public:
 		virtual void Turn_Implementation(float Scale) override;
 	/* End of Character Controls Interface */
 	
+	//virtual void Die();
+
 protected:
 	virtual void BeginPlay();
 
 	virtual void RemoveHealth(float Damage);
-	virtual void Die();
 
 	virtual void Dash();
 

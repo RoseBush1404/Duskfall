@@ -42,6 +42,10 @@ public:
 	virtual void TurnRate_Implementation(float Scale) override;
 	virtual void Turn_Implementation(float Scale) override;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Death")
+		void Die();
+		void Die_Implementation();
+
 protected:
 
 	virtual void BeginPlay() override;
