@@ -6,6 +6,8 @@
 #include "DrawDebugHelpers.h"
 #include "../Characters/HealthSystem.h"
 #include "../Characters/DuskfallCharacter.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 
 void AMeleeWeapon::HitEffect()
 {
@@ -39,4 +41,14 @@ void AMeleeWeapon::HitEffect()
 	}
 
 	Super::HitEffect();
+}
+
+void AMeleeWeapon::AttackTriggered()
+{
+	Super::AttackTriggered();
+
+	if (AttackAudio != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), AttackAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+	}
 }

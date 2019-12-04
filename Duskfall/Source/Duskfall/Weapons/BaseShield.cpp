@@ -6,6 +6,8 @@
 #include "PaperFlipbookComponent.h"
 #include "../Characters/DuskfallCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 
@@ -67,6 +69,22 @@ void ABaseShield::ParryPressed()
 		FlipbookComponent->SetFlipbook(ParryShieldAnimation);
 	}
 	GetWorld()->GetTimerManager().SetTimer(ParryTimerHandle, this, &ABaseShield::ParryFinished, ParryTime, false);
+}
+
+void ABaseShield::SuccessfulBlock()
+{
+	if (BlockAudio != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), BlockAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+	}
+}
+
+void ABaseShield::SuccessfultParry()
+{
+	if (ParryAudio != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ParryAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+	}
 }
 
 void ABaseShield::ParryFinished()

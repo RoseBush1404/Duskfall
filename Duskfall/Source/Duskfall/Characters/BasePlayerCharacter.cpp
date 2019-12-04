@@ -5,6 +5,8 @@
 #include "GameFramework/PlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/AudioComponent.h"
+#include "Engine/Classes/Sound/SoundCue.h"
 #include "GameFramework/InputSettings.h"
 #include "Camera/CameraComponent.h"
 #include "PaperFlipbookComponent.h"
@@ -70,6 +72,7 @@ void ABasePlayerCharacter::TakeDamage_Implementation(float Damage, float DamageM
 		Dot = GetDotProductTo(DamageCauser);
 		if (Dot >= Shield->GetShieldDotProductRange())
 		{
+			Shield->SuccessfulBlock();
 			if (CurrentStamina >= Damage * DamageMoifier)
 			{
 				CurrentStamina = CurrentStamina - (Damage * DamageMoifier);
@@ -98,6 +101,7 @@ void ABasePlayerCharacter::TakeDamage_Implementation(float Damage, float DamageM
 			ADuskfallCharacter* Character = Cast<ADuskfallCharacter>(DamageCauser);
 			if (Character != nullptr)
 			{
+				Shield->SuccessfultParry();
 				Character->CharacterParryed();
 			}
 			else
@@ -158,6 +162,24 @@ void ABasePlayerCharacter::CharacterMoveForward(float Value)
 		{
 			GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(WalkingCameraShake, 1.0f);
 		}
+		//add audio
+		if (WalkAudio != nullptr)
+		{
+			if (MovementAudioComponent->Sound != WalkAudio && !MovementAudioComponent->IsPlaying() && GetCharacterMovement()->IsMovingOnGround())
+			{
+				MovementAudioComponent->SetSound(WalkAudio);
+				MovementAudioComponent->Play(0.0f);
+			}
+		}
+	}
+
+	if (GetCharacterMovement()->Velocity == FVector(0.0f, 0.0f, 0.0f) || !GetCharacterMovement()->IsMovingOnGround())
+	{
+		if (MovementAudioComponent->Sound == WalkAudio || !MovementAudioComponent->IsPlaying())
+		{
+			MovementAudioComponent->Stop();
+			MovementAudioComponent->SetSound(nullptr);
+		}
 	}
 }
 
@@ -171,6 +193,15 @@ void ABasePlayerCharacter::CharacterMoveRight(float Value)
 		if (WalkingCameraShake != nullptr)
 		{
 			GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(WalkingCameraShake, 1.0f);
+		}
+		//add audio
+		if (WalkAudio != nullptr)
+		{
+			if (MovementAudioComponent->Sound != WalkAudio && !MovementAudioComponent->IsPlaying() && GetCharacterMovement()->IsMovingOnGround())
+			{
+				MovementAudioComponent->SetSound(WalkAudio);
+				MovementAudioComponent->Play(0.0f);
+			}
 		}
 	}
 }

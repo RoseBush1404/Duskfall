@@ -4,6 +4,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "../Characters/HealthSystem.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 
 ADuskfallProjectile::ADuskfallProjectile() 
 {
@@ -40,10 +42,18 @@ void ADuskfallProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	if (HealthSystem != nullptr) // C++ Layer
 	{
 		HealthSystem->Execute_TakeDamage(OtherActor, DamageAmount, DamageModifer, this);
+		if (HitAudio != nullptr)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+		}
 	}
 	else if (OtherActor != nullptr && OtherActor->GetClass() != nullptr && OtherActor->GetClass()->ImplementsInterface(UHealthSystem::StaticClass())) // Blueprint Layer
 	{
 		IHealthSystem::Execute_TakeDamage(OtherActor, DamageAmount, DamageModifer, this);
+		if (HitAudio != nullptr)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+		}
 	}
 
 	Destroy();

@@ -11,6 +11,7 @@
 class UPaperFlipbook;
 class UPaperFlipbookComponent;
 class ADuskfallCharacter;
+class USoundCue;
 
 UCLASS()
 class DUSKFALL_API ABaseShield : public AActor
@@ -26,6 +27,10 @@ public:
 	void BlockReleased();
 
 	void ParryPressed();
+
+	void SuccessfulBlock();
+
+	void SuccessfultParry();
 
 	void SetUser(ADuskfallCharacter* Character) { User = Character; }
 
@@ -77,4 +82,13 @@ protected:
 	float DefaultMovementSpeed;
 
 	FTimerHandle ParryTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* BlockAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* ParryAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		float MasterVolume = 1.0f;
 };

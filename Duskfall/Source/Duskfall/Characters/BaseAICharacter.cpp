@@ -5,6 +5,9 @@
 #include "PaperFlipbook.h"
 #include "PaperFlipbookComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 #include "../Weapons/BaseWeapon.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
@@ -109,6 +112,11 @@ void ABaseAICharacter::TakeDamage_Implementation(float Damage, float DamageMoifi
 	else
 	{
 		CharacterState = ECharacterState::ECS_Died;
+
+		if (DeathAudio != nullptr)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), DeathAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+		}
 		//delay
 		GetWorld()->GetTimerManager().SetTimer(DeathDelayTimer, this, &ABaseAICharacter::Die, DelayBeforeDeath, false);
 	}
@@ -140,6 +148,10 @@ void ABaseAICharacter::CharacterParryed()
 	if (Weapon != nullptr)
 	{
 		Weapon->StopAttack();
+	}
+	if (ParriedAudio != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ParriedAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
 	}
 	CharacterFlipbook->SetFlipbook(StaggeredCharacterAnimation);
 	CharacterState = ECharacterState::ECS_Parryed;

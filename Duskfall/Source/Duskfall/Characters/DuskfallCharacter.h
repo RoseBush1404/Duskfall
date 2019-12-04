@@ -12,6 +12,8 @@
 
 class ABaseWeapon;
 class ABaseShield;
+class USoundCue;
+class UAudioComponent;
 
 UENUM(BlueprintType)
 enum class ECharacterState : uint8
@@ -182,5 +184,30 @@ protected:
 
 	FTimerHandle StaggerDelayTimer;
 	FTimerHandle ParryedDelayTimer;
+
+	//Audio
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* WalkAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* JumpAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* DashAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* DeathAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* HitAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* ParriedAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		float MasterVolume = 1.0f;
+
+	UAudioComponent* MovementAudioComponent;
 };
 

@@ -12,6 +12,8 @@
 class UPaperFlipbook;
 class UPaperFlipbookComponent;
 class ADuskfallCharacter;
+class USoundCue;
+class UAudioComponent;
 
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
@@ -130,4 +132,11 @@ protected:
 
 	FTimerHandle weaponChargingTimer;
 
+	//audio
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* AttackAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		float MasterVolume = 1.0f;
 };

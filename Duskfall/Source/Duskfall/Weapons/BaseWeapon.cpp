@@ -6,6 +6,8 @@
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Characters/DuskfallCharacter.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 
@@ -109,6 +111,7 @@ void ABaseWeapon::HitEffect()
 {
 	//child classes override this to get the weapon to do its damage
 	WeaponState = EWeaponState::EWS_Damage;
+
 	GetWorld()->GetTimerManager().ClearTimer(WindUpDelayTimer);
 	GetWorld()->GetTimerManager().SetTimer(WindDownDelayTimer, this, &ABaseWeapon::WindDownTrigger, AttackWindDown, false);
 }

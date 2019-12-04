@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "DuskfallProjectile.generated.h"
 
+class USoundCue;
+
 UCLASS(config=Game)
 class ADuskfallProjectile : public AActor
 {
@@ -36,5 +38,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Projectile Stats")
 		float DamageModifer;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		USoundCue* HitAudio;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+		float MasterVolume = 1.0f;
 };
 

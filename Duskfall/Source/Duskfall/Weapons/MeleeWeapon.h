@@ -19,6 +19,9 @@ protected:
 
 	virtual void HitEffect() override;
 
+	virtual void AttackTriggered() override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Melee Weapon Stats")
 		FVector HitBoxHalfSize = FVector(100.0f,50.0f,50.0f);
+
 };

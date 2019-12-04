@@ -3,6 +3,9 @@
 #include "DuskfallCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/AudioComponent.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 #include "GameFramework/InputSettings.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Camera/CameraComponent.h"
@@ -27,6 +30,10 @@ ADuskfallCharacter::ADuskfallCharacter()
 	MuzzlePoint = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzlePoint"));
 	MuzzlePoint->SetupAttachment(MuzzleAttachmentPoint);
 	MuzzlePoint->RelativeLocation = FVector(110.0f, 0.0f, 35.0f);
+
+	//Set up audio components
+	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComponent"));
+	MovementAudioComponent->SetupAttachment(GetCapsuleComponent());
 
 	// set our turn rates for input
 	BaseTurnRate = 45.0f;
@@ -66,13 +73,12 @@ void ADuskfallCharacter::EndStagger()
 void ADuskfallCharacter::RemoveHealth(float Damage)
 {
 	CurrentHealth = CurrentHealth - Damage;
-}
 
-/*
-void ADuskfallCharacter::Die()
-{
+	if (HitAudio != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+	}
 }
-*/
 
 void ADuskfallCharacter::Dash()
 {
@@ -85,6 +91,13 @@ void ADuskfallCharacter::Dash()
 	//add impule
 	GetCharacterMovement()->AddImpulse(FVector(0.0f, 0.0f, DashUpwardForce), true);
 	GetCharacterMovement()->AddImpulse(GetVelocity() * DashVelocityModifier, true);
+
+	//play audio
+	if (DashAudio != nullptr)
+	{
+		MovementAudioComponent->SetSound(DashAudio);
+		MovementAudioComponent->Play(0.0f);
+	}
 }
 
 void ADuskfallCharacter::UpdateMuzzleRotation(FRotator NewRotation)
@@ -169,6 +182,11 @@ UCharacterMovementComponent * ADuskfallCharacter::GetCharacterMovementComponent_
 /* Character Controls Interface*/
 void ADuskfallCharacter::JumpPressed_Implementation()
 {
+	if (JumpAudio != nullptr && GetCharacterMovement()->IsMovingOnGround())
+	{
+		MovementAudioComponent->SetSound(JumpAudio);
+		MovementAudioComponent->Play(0.0f);
+	}
 	Jump();
 }
 

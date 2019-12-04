@@ -5,6 +5,8 @@
 #include "Engine/World.h"
 #include "Weapons/DuskfallProjectile.h"
 #include "../Characters/DuskfallCharacter.h"
+#include "Engine/Classes/Sound/SoundCue.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 
 void ARangedWeapon::HitEffect()
 {
@@ -13,6 +15,11 @@ void ARangedWeapon::HitEffect()
 	SpawnedProjectile->DamageAmount = BaseDamage;
 	SpawnedProjectile->DamageModifer = ChargeModifier;
 	SpawnedProjectile->SetOwner(User);
+
+	if (AttackAudio != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), AttackAudio, GetActorLocation(), MasterVolume, 1.0f, 0.0f);
+	}
 
 	Super::HitEffect();
 }
