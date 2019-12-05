@@ -43,7 +43,7 @@ public:
 
 	void SetUser(ADuskfallCharacter* Character) { User = Character; }
 
-	void SetMuzzlePoint(UArrowComponent* muzzlePoint) { Muzzle = muzzlePoint; }
+	void SetMuzzlePoint(UArrowComponent* muzzlePoint, USceneComponent* muzzleAttactmentPoint) { Muzzle = muzzlePoint; MuzzleTurret = muzzleAttactmentPoint; }
 
 	void SetFlipbook(UPaperFlipbookComponent* Flipbook);
 
@@ -120,6 +120,7 @@ protected:
 	float DefaultMovementSpeed = 0.0f;
 
 	UArrowComponent* Muzzle;
+	USceneComponent* MuzzleTurret;
 
 	/* Attack charging fun and vair*/
 	virtual void AttackingCharging();

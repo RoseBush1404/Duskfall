@@ -11,7 +11,7 @@
 void ARangedWeapon::HitEffect()
 {
 	FActorSpawnParameters SpawnInfo;
-	ADuskfallProjectile* SpawnedProjectile = GetWorld()->SpawnActor<ADuskfallProjectile>(Projectile, Muzzle->GetComponentLocation(), Muzzle->GetComponentRotation(), SpawnInfo);
+	ADuskfallProjectile* SpawnedProjectile = GetWorld()->SpawnActor<ADuskfallProjectile>(Projectile, Muzzle->GetComponentLocation(), MuzzleTurret->GetComponentRotation(), SpawnInfo);
 	SpawnedProjectile->DamageAmount = BaseDamage;
 	SpawnedProjectile->DamageModifer = ChargeModifier;
 	SpawnedProjectile->SetOwner(User);

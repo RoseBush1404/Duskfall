@@ -53,6 +53,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 		float CurrentHealth = 0.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
+		float MaxHealth = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats")
+		float MaxStamina = 100.0f;
+
 	ECharacterState GetCharacterState() { return CharacterState; }
 	void UpdateCharacterState(ECharacterState NewState) { CharacterState = NewState; }
 	void UpdateMuzzleRotation(FRotator NewRotation);
@@ -151,11 +157,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Default)
 		ECharacterState CharacterState = ECharacterState::ECS_Moveable;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Stats")
-		float MaxHealth = 100.0f;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Stats")
-		float MaxStamina = 100.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 		float StaminaRegenAmount = 0.1f;
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")

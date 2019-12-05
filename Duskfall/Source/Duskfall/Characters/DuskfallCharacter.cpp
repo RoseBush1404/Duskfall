@@ -51,7 +51,7 @@ void ADuskfallCharacter::BeginPlay()
 		Weapon = GetWorld()->SpawnActor<ABaseWeapon>(StartingWeapon, GetActorTransform());
 		Weapon->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 		Weapon->SetUser(this);
-		Weapon->SetMuzzlePoint(MuzzlePoint);
+		Weapon->SetMuzzlePoint(MuzzlePoint, MuzzleAttachmentPoint);
 		Weapon->SetDefaultMovementSpeed(MovementComponent->MaxWalkSpeed);
 	}
 	if (StartingShield != nullptr)
@@ -102,7 +102,7 @@ void ADuskfallCharacter::Dash()
 
 void ADuskfallCharacter::UpdateMuzzleRotation(FRotator NewRotation)
 {
-	MuzzleAttachmentPoint->SetWorldRotation(FRotator(-NewRotation.Pitch, NewRotation.Yaw, NewRotation.Roll));
+	MuzzleAttachmentPoint->SetWorldRotation(FRotator(NewRotation.Pitch, NewRotation.Yaw, NewRotation.Roll));
 }
 
 void ADuskfallCharacter::CharacterStaggered()
@@ -226,9 +226,12 @@ void ADuskfallCharacter::AttackReleased_Implementation()
 
 void ADuskfallCharacter::BlockPressed_Implementation()
 {
-	if (Shield != nullptr)
+	if (CurrentStamina > 0)
 	{
-		Shield->BlockPressed();
+		if (Shield != nullptr)
+		{
+			Shield->BlockPressed();
+		}
 	}
 }
 
