@@ -49,7 +49,7 @@ void ABaseAICharacter::FacePlayer()
 	if (CanChangePitchOfMuzzle)
 	{
 		UpdateMuzzleRotation(LookAtDirection);
-		CharacterFlipbook->SetWorldRotation(FRotator(LookAtDirection.Pitch,LookAtDirection.Yaw + 90, 0));
+		CharacterFlipbook->SetWorldRotation(FRotator( 0, LookAtDirection.Yaw + 90, 0));
 	}
 
 	if (CharacterState == ECharacterState::ECS_Moveable)
