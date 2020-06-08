@@ -20,9 +20,9 @@ ABaseAICharacter::ABaseAICharacter()
 {
 	CharacterFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("CharacterFlipBook"));
 	CharacterFlipbook->SetupAttachment(GetCapsuleComponent());
-	CharacterFlipbook->RelativeLocation = FVector(0.0f, 0.0f, 50.0f);
-	CharacterFlipbook->RelativeRotation = FRotator(0.0f, 90.0f, 0.0f);
-	CharacterFlipbook->RelativeScale3D = FVector(5.0f, 5.0f, 5.0f);
+	CharacterFlipbook->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
+	CharacterFlipbook->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	CharacterFlipbook->SetRelativeScale3D(FVector(5.0f, 5.0f, 5.0f));
 }
 
 void ABaseAICharacter::BeginPlay()

@@ -29,7 +29,7 @@ ADuskfallCharacter::ADuskfallCharacter()
 
 	MuzzlePoint = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzlePoint"));
 	MuzzlePoint->SetupAttachment(MuzzleAttachmentPoint);
-	MuzzlePoint->RelativeLocation = FVector(110.0f, 0.0f, 35.0f);
+	MuzzlePoint->SetRelativeLocation(FVector(110.0f, 0.0f, 35.0f));
 
 	//Set up audio components
 	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComponent"));

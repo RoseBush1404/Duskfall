@@ -21,18 +21,18 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->RelativeLocation = FVector(-39.56f, 1.75f, 64.f); // Position the camera
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	WeaponFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("WeaponFlipBook"));
 	WeaponFlipbook->SetupAttachment(GetCapsuleComponent());
-	WeaponFlipbook->RelativeLocation = FVector(10.0f, 10.0f, 60.0f);
-	WeaponFlipbook->RelativeRotation = FRotator(0.0f, 90.0f, 0.0f);
+	WeaponFlipbook->SetRelativeLocation(FVector(10.0f, 10.0f, 60.0f));
+	WeaponFlipbook->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 	
 	ShieldFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("ShieldFlipBook"));
 	ShieldFlipbook->SetupAttachment(GetCapsuleComponent());
-	ShieldFlipbook->RelativeLocation = FVector(10.0f, -20.0f, 60.0f);
-	ShieldFlipbook->RelativeRotation = FRotator(0.0f, 90.0f, 0.0f);
+	ShieldFlipbook->SetRelativeLocation(FVector(10.0f, -20.0f, 60.0f));
+	ShieldFlipbook->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 }
 
 void ABasePlayerCharacter::BeginPlay()
